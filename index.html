@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Alahly Chatbot — المساعد الأهلاوي</title>
   <style>
     :root {
@@ -43,6 +43,8 @@
       background: linear-gradient(180deg, rgba(2, 2, 2, 0.9), rgba(7, 7, 7, 0.95));
       position: relative;
       padding: 16px;
+      height: 100dvh;
+      max-height: 100dvh;
     }
 
     .page::after {
@@ -68,6 +70,7 @@
       gap: 14px;
       min-height: 0;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .brand { display: flex; gap: 12px; align-items: center; }
@@ -108,6 +111,7 @@
       flex-direction: column;
       min-height: 0;
       gap: 12px;
+      overflow: hidden;
     }
 
     .chat-header {
@@ -128,6 +132,7 @@
       gap: 12px;
       scroll-behavior: smooth;
       min-height: 0;
+      -webkit-overflow-scrolling: touch;
     }
     .msg {
       max-width: 78%; 
@@ -196,19 +201,24 @@
       }
       .page { 
         grid-template-columns: 1fr; 
-        height: auto;
+        height: 100dvh;
+        max-height: 100dvh;
         min-height: 100dvh;
         padding: 12px;
         gap: 12px;
+        border-radius: 0;
       }
       .left { 
         order: 2; 
         max-height: 40vh;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
       .right { 
         order: 1; 
-        min-height: 55vh;
+        min-height: 60vh;
+        max-height: 60vh;
+        overflow: hidden;
       }
     }
 
@@ -377,7 +387,11 @@
       time.textContent = d.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
       el.appendChild(time);
       messagesEl.appendChild(el);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+
+      // Scroll بعد الـ animation
+      setTimeout(() => {
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      }, 100);
     }
 
     addMessage("أهلاً! أنا Alahly Chatbot — اسألني عن اللاعبين، البطولات، المدرب، المقر، أو أي حاجة تخص الأهلي.");
@@ -413,7 +427,6 @@
         return "الكابتن الحالي: محمد الشناوي — حارس مرمى وقائد ذي خبرة.";
       }
 
-      // === تعديل مهم: اللاعبين (الأولوية الأولى) ===
       if (
         msg.includes("لعيبة") || 
         msg.includes("لاعبين") || 
@@ -443,28 +456,23 @@
         return out;
       }
 
-      // كل البطولات
       if (msg.includes("كل") && (msg.includes("بطولات") || msg.includes("فاز"))) {
         const lines = AHLY.trophies.breakdown.map(t => `- ${t.title}: ${t.count} مرة`).join("\n");
         return `إجمالي البطولات: ${AHLY.trophies.totalOfficial}\n${lines}\n\nاسأل 'آخر البطولات' للإنجازات الحديثة.`;
       }
 
-      // آخر البطولات
       if ((msg.includes("آخر") || msg.includes("اخر")) && (msg.includes("بطولات") || msg.includes("فاز"))) {
         return `آخر البطولات:\n- ${AHLY.recentTitles.map(t => t.year + " — " + t.title).join("\n- ")}\n\nيشارك في: ${AHLY.tournaments.slice(0,3).join("، ")}...`;
       }
 
-      // البطولات اللي بيلعبها
       if (msg.includes("بطولات") && !msg.includes("كل") && !msg.includes("آخر")) {
         return `الأهلي يشارك في:\n- ${AHLY.tournaments.join("\n- ")}\n\nاسأل 'آخر البطولات' للإنجازات.`;
       }
 
-      // نبذة عامة
       if ((msg.includes("مين") || msg.includes("عن")) && msg.includes("الاهلي")) {
         return `${AHLY.name}\n- تأسس: ${AHLY.foundedDate}\n- رئيس: ${AHLY.president}\n- مدرب: ${AHLY.coach}\n- آخر بطولات: ${AHLY.recentTitles.map(t=>t.title+" ("+t.year+")").join(" ، ")}`;
       }
 
-      // سؤال عن لاعب
       for (const pl of AHLY.players) {
         const nameLower = pl.name.toLowerCase();
         if (msg.includes(nameLower.split(" ")[0]) && msg.length <= 40) {
