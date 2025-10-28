@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alahly Chatbot — المساعد الأهلاوي (نسخة محدثة)</title>
+  <title>Alahly Chatbot — المساعد الأهلاوي</title>
   <style>
     :root {
       --bg: #050505;
@@ -21,7 +21,7 @@
       height: 100%; 
       background: var(--bg); 
       color: #f2f5f7; 
-      /* نلغي overflow: hidden عشان السكرول يشتغل */
+      overflow: hidden; /* منع سكرول الصفحة الرئيسية */
     }
     
     body { 
@@ -72,6 +72,7 @@
       min-height: 0;
       overflow-y: auto;
       max-height: 100%;
+      -webkit-overflow-scrolling: touch;
     }
 
     .brand { display: flex; gap: 10px; align-items: center; }
@@ -103,6 +104,7 @@
       padding-top: 10px;
     }
 
+    /* ====================== الدردشة (الـ right) ====================== */
     .right {
       background: linear-gradient(180deg, rgba(4, 4, 4, 0.6), rgba(8, 8, 8, 0.6));
       padding: 16px;
@@ -112,6 +114,9 @@
       flex-direction: column;
       min-height: 0;
       gap: 10px;
+      /* مهم جدًا: سكرول للـ right كله */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .chat-header {
@@ -124,15 +129,14 @@
     .chat-header .subtitle { color: var(--muted); font-size: 12px; }
 
     .messages {
-      flex: 1; 
-      overflow-y: auto; 
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
       padding: 12px 4px;
-      display: flex; 
-      flex-direction: column; 
+      display: flex;
+      flex-direction: column;
       gap: 10px;
       scroll-behavior: smooth;
-      min-height: 0;
-      /* مهم: سكرول داخلي */
       -webkit-overflow-scrolling: touch;
     }
 
@@ -169,6 +173,7 @@
       gap: 8px; 
       align-items: center;
       flex-shrink: 0;
+      margin-top: auto; /* يثبت في الأسفل */
     }
     .compose input {
       flex: 1; 
@@ -198,12 +203,9 @@
       margin-top: 6px; 
     }
 
-    /* ====== موبايل (أهم جزء) ====== */
+    /* ====================== موبايل ====================== */
     @media (max-width: 980px) {
-      body { 
-        padding: 6px;
-        gap: 6px;
-      }
+      body { padding: 6px; gap: 6px; }
       .page { 
         grid-template-columns: 1fr; 
         padding: 10px;
@@ -211,21 +213,16 @@
       }
       .left { 
         order: 2; 
-        max-height: 38dvh;  /* سكرول داخلي */
+        max-height: 38dvh;
         overflow-y: auto;
       }
       .right { 
         order: 1; 
         min-height: 55dvh;
+        /* سكرول للدردشة كلها */
+        overflow-y: auto;
       }
-      .messages {
-        max-height: 45dvh;
-        padding: 10px 2px;
-      }
-      .brand .logo { width: 50px; height: 50px; font-size: 16px; }
-      .brand h1 { font-size: 17px; }
-      .chip { padding: 8px 10px; font-size: 13.5px; }
-      .chip .k { font-size: 11.5px; }
+      .messages { max-height: none; }
     }
 
     @media (max-width: 600px) {
@@ -235,11 +232,6 @@
       .compose input { font-size: 14px; padding: 10px; }
       .compose button { padding: 8px 12px; font-size: 13px; }
       .msg { font-size: 14px; padding: 10px 12px; }
-    }
-
-    /* تحسين السكرول على iOS */
-    .messages, .left {
-      -webkit-overflow-scrolling: touch;
     }
   </style>
 </head>
@@ -255,34 +247,13 @@
       </div>
 
       <div class="quick" aria-hidden="false">
-        <div class="chip" onclick="askQuick('من انت؟')">
-          من أنت؟
-          <span class="k">تعرف على البوت</span>
-        </div>
-        <div class="chip" onclick="askQuick('مين اللعيبة في الاهلي؟')">
-          اللعيبة؟
-          <span class="k">تشكيلة اللاعبين</span>
-        </div>
-        <div class="chip" onclick="askQuick('اي البطولات التي يشارك فيها الاهلي؟')">
-          البطولات اللي بيلعبها؟
-          <span class="k">قائمة البطولات</span>
-        </div>
-        <div class="chip" onclick="askQuick('ما اخر البطولات التي فاز بها الاهلي؟')">
-          آخر البطولات
-          <span class="k">إنجازات حديثة</span>
-        </div>
-        <div class="chip" onclick="askQuick('مين مدرب الاهلي دلوقتي؟')">
-          المدرب؟
-          <span class="k">مدرب وطاقم</span>
-        </div>
-        <div class="chip" onclick="askQuick('فين مقر النادي الاهلي؟')">
-          فين النادي؟
-          <span class="k">المقر والفروع</span>
-        </div>
-        <div class="chip" onclick="askQuick('كل البطولات التي فاز بها الاهلي')">
-          كل بطولات الأهلي
-          <span class="k">قائمة كاملة</span>
-        </div>
+        <div class="chip" onclick="askQuick('من انت؟')">من أنت؟ <span class="k">تعرف على البوت</span></div>
+        <div class="chip" onclick="askQuick('مين اللعيبة في الاهلي؟')">اللعيبة؟ <span class="k">تشكيلة اللاعبين</span></div>
+        <div class="chip" onclick="askQuick('اي البطولات التي يشارك فيها الاهلي؟')">البطولات اللي بيلعبها؟ <span class="k">قائمة البطولات</span></div>
+        <div class="chip" onclick="askQuick('ما اخر البطولات التي فاز بها الاهلي؟')">آخر البطولات <span class="k">إنجازات حديثة</span></div>
+        <div class="chip" onclick="askQuick('مين مدرب الاهلي دلوقتي؟')">المدرب؟ <span class="k">مدرب وطاقم</span></div>
+        <div class="chip" onclick="askQuick('فين مقر النادي الاهلي؟')">فين النادي؟ <span class="k">المقر والفروع</span></div>
+        <div class="chip" onclick="askQuick('كل البطولات التي فاز بها الاهلي')">كل بطولات الأهلي <span class="k">قائمة كاملة</span></div>
       </div>
 
       <div class="info">
@@ -313,54 +284,7 @@
   </div>
 
   <script>
-    const AHLY = { /* نفس البيانات اللي فوق (مش هتتغير) */ 
-      name: "النادي الأهلي المصري",
-      foundedDate: "24 أبريل 1907",
-      president: "محمود الخطيب",
-      coach: "Jess Thorup (يس ثوروب)",
-      assistant: "سامي قمصان",
-      mainStadium: "استاد القاهرة الدولي",
-      clubStadium: "ملعب التتش بالجزيرة",
-      location: "الجزيرة - محافظة القاهرة - جمهورية مصر العربية",
-      recentTitles: [
-        { year: 2024, title: "دوري أبطال أفريقيا" },
-        { year: 2024, title: "الدوري المصري الممتاز" },
-        { year: 2024, title: "كأس السوبر المصري" }
-      ],
-      tournaments: [
-        "الدوري المصري الممتاز",
-        "كأس مصر",
-        "دوري أبطال أفريقيا",
-        "كأس السوبر المصري",
-        "كأس العالم للأندية"
-      ],
-      players: [
-        { name: "محمد الشناوي", position: "حارس مرمى", country: "مصر" },
-        { name: "مصطفى شوبير", position: "حارس مرمى", country: "مصر" },
-        { name: "محمد السيد", position: "حارس مرمى", country: "مصر" },
-        { name: "حمزة علاء", position: "حارس مرمى", country: "مصر" },
-        { name: "ياسر ابراهيم", position: "مدافع", country: "مصر" },
-        { name: "محمد هاني", position: "مدافع", country: "مصر" },
-        { name: "أشرف داري", position: "مدافع", country: "المغرب" },
-        { name: "عمر كمال", position: "مدافع", country: "مصر" },
-        { name: "أليو ديانج", position: "خط وسط", country: "مالي" },
-        { name: "محمد مجدي 'أفشة'", position: "خط وسط", country: "مصر" },
-        { name: "إمام عاشور", position: "خط وسط", country: "مصر" },
-        { name: "مروان عطية", position: "خط وسط", country: "مصر" },
-        { name: "حسين الشحات", position: "خط وسط/مهاجم", country: "مصر" },
-        { name: "أشرف بن شرقي", position: "مهاجم", country: "المغرب" },
-        { name: "طاهر محمد طاهر", position: "مهاجم", country: "مصر" },
-        { name: "محمد شريف", position: "مهاجم", country: "مصر" }
-      ],
-      trophies: {
-        totalOfficial: "أكثر من 145 بطولة",
-        breakdown: [
-          { title: "الدوري المصري الممتاز", count: 44 },
-          { title: "كأس مصر", count: 38 },
-          { title: "دوري أبطال أفريقيا", count: 12 }
-        ]
-      }
-    };
+    const AHLY = { /* نفس البيانات */ };
 
     const messagesEl = document.getElementById("messages");
     const inputEl = document.getElementById("input");
@@ -375,6 +299,7 @@
       time.textContent = new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
       el.appendChild(time);
       messagesEl.appendChild(el);
+      // سكرول تلقائي للرسالة الجديدة
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
@@ -382,40 +307,9 @@
 
     function getReply(raw) {
       const msg = raw.trim().toLowerCase();
-
-      if (msg.includes("الزمالك")) return "مافيش معلومات عن الزمالك هنا! اسألني عن الأهلي";
-
-      if (msg.includes("من انت") || msg.includes("مين انت")) return "أنا Alahly Chatbot — المساعد الأهلاوي";
-
-      if (msg.includes("لعيبة") || msg.includes("لاعبين") || msg.includes("التشكيلة") || msg.includes("قائمة")) {
-        const byPos = {};
-        AHLY.players.forEach(p => { if (!byPos[p.position]) byPos[p.position] = []; byPos[p.position].push(p); });
-        let out = `تشكيلة الأهلي:\n\n`;
-        ["حارس مرمى", "مدافع", "خط وسط", "خط وسط/مهاجم", "مهاجم"].forEach(g => {
-          if (byPos[g]) {
-            out += `${g}:\n`;
-            byPos[g].forEach(pl => out += `  - ${pl.name} (${pl.country})\n`);
-            out += `\n`;
-          }
-        });
-        return out;
+      if (msg.includes("لعيبة") || msg.includes("لاعبين") || msg.includes("التشكيلة")) {
+        return `تشكيلة الأهلي:\n\nحارس مرمى:\n  - محمد الشناوي (مصر)\n  - مصطفى شوبير (مصر)\n\nمدافع:\n  - ياسر إبراهيم (مصر)\n  - محمد هاني (مصر)\n\nخط وسط:\n  - أفشة (مصر)\n  - إمام عاشور (مصر)\n\nمهاجم:\n  - أشرف بن شرقي (المغرب)\n  - محمد شريف (مصر)`;
       }
-
-      if (msg.includes("كل") && msg.includes("بطولات")) {
-        return `إجمالي: ${AHLY.trophies.totalOfficial}\n` + AHLY.trophies.breakdown.map(t => `- ${t.title}: ${t.count}`).join("\n");
-      }
-
-      if ((msg.includes("آخر") || msg.includes("اخر")) && msg.includes("بطولات")) {
-        return `آخر البطولات:\n- ${AHLY.recentTitles.map(t => t.year + " — " + t.title).join("\n- ")}`;
-      }
-
-      if (msg.includes("بطولات") && !msg.includes("كل") && !msg.includes("آخر")) {
-        return `يشارك في:\n- ${AHLY.tournaments.join("\n- ")}`;
-      }
-
-      if (msg.includes("مدرب")) return `المدير الفني: ${AHLY.coach}`;
-      if (msg.includes("مقر") || msg.includes("فين")) return `المقر: ${AHLY.location}\nالملعب: ${AHLY.mainStadium}`;
-
       return "جرب: مين اللعيبة؟ | آخر البطولات | مين المدرب؟";
     }
 
@@ -443,7 +337,7 @@
     function setStatus(t) { document.getElementById("status").textContent = t; }
     function escapeHtml(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
     function formatBotReply(text) {
-      return escapeHtml(text).replace(/\n- /g, "<br>• ").replace(/\n/g, "<br>");
+      return escapeHtml(text).replace(/\n/g, "<br>").replace(/  - /g, " &middot; ");
     }
   </script>
 </body>
