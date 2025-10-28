@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Alahly Chatbot — المساعد الأهلاوي (نسخة محدثة)</title>
+  <title>Alahly Chatbot — المساعد الأهلاوي</title>
   <style>
     :root {
       --bg: #050505;
@@ -16,36 +16,33 @@
       font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     html, body { 
       height: 100%; 
       background: var(--bg); 
       color: #f2f5f7; 
-      /* نلغي overflow: hidden عشان السكرول يشتغل */
+      overflow: hidden;
     }
-    
     body { 
       display: flex; 
-      flex-direction: column;
-      padding: 8px;
-      gap: 8px;
-      min-height: 100dvh;
+      align-items: stretch; 
+      justify-content: center; 
+      padding: 12px; 
+      gap: 12px;
     }
 
     .page {
-      flex: 1;
-      min-height: 0;
+      width: 100%;
       max-width: 1400px;
-      margin: 0 auto;
+      min-height: 100dvh;
       border-radius: 16px;
       overflow: hidden;
       display: grid;
-      grid-template-columns: minmax(280px, 360px) 1fr;
-      gap: 14px;
+      grid-template-columns: minmax(300px, 360px) 1fr;
+      gap: 16px;
       box-shadow: var(--shadow);
       background: linear-gradient(180deg, rgba(2, 2, 2, 0.9), rgba(7, 7, 7, 0.95));
       position: relative;
-      padding: 14px;
+      padding: 16px;
     }
 
     .page::after {
@@ -63,89 +60,84 @@
 
     .left {
       background: linear-gradient(180deg, rgba(12, 12, 12, 0.95), rgba(6, 6, 6, 0.85));
-      padding: 16px;
+      padding: 18px;
       border-radius: 12px;
       z-index: 1;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       min-height: 0;
       overflow-y: auto;
-      max-height: 100%;
     }
 
-    .brand { display: flex; gap: 10px; align-items: center; }
+    .brand { display: flex; gap: 12px; align-items: center; }
     .brand .logo {
-      width: 56px; height: 56px; border-radius: 10px;
+      width: 64px; height: 64px; border-radius: 12px;
       background: linear-gradient(135deg, var(--accent), #8b0b1a);
       display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 18px; color: #fff;
-      box-shadow: 0 6px 16px rgba(200, 16, 46, 0.12);
+      font-weight: 800; font-size: 20px; color: #fff;
+      box-shadow: 0 8px 20px rgba(200, 16, 46, 0.12);
     }
-    .brand h1 { margin: 0; font-size: 18px; }
-    .brand .sub { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .brand h1 { margin: 0; font-size: 20px; }
+    .brand .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
 
-    .quick { display: flex; flex-direction: column; gap: 7px; }
+    .quick { display: flex; flex-direction: column; gap: 8px; }
     .chip {
       background: var(--glass);
       border-radius: 10px;
-      padding: 9px 11px;
+      padding: 10px 12px;
       cursor: pointer;
       display: flex; justify-content: space-between; align-items: center;
       transition: transform .14s ease, background .14s;
-      font-weight: 600; color: #fff; font-size: 14px;
+      font-weight: 600; color: #fff;
     }
-    .chip:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.04); }
-    .chip .k { color: var(--muted); font-weight: 400; font-size: 12px; }
+    .chip:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.04); }
+    .chip .k { color: var(--muted); font-weight: 400; font-size: 13px; }
 
     .left .info {
-      margin-top: auto; font-size: 12px; color: var(--muted); line-height: 1.45;
-      padding-top: 10px;
+      margin-top: auto; font-size: 13px; color: var(--muted); line-height: 1.45;
+      padding-top: 12px;
     }
 
     .right {
       background: linear-gradient(180deg, rgba(4, 4, 4, 0.6), rgba(8, 8, 8, 0.6));
-      padding: 16px;
+      padding: 18px;
       border-radius: 12px;
       z-index: 1;
       display: flex;
       flex-direction: column;
       min-height: 0;
-      gap: 10px;
+      gap: 12px;
     }
 
     .chat-header {
-      display: flex; align-items: center; gap: 10px;
+      display: flex; align-items: center; gap: 12px;
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.03);
       flex-shrink: 0;
     }
-    .chat-header .title { font-weight: 700; font-size: 17px; }
-    .chat-header .subtitle { color: var(--muted); font-size: 12px; }
+    .chat-header .title { font-weight: 700; font-size: 18px; }
+    .chat-header .subtitle { color: var(--muted); font-size: 13px; }
 
     .messages {
       flex: 1; 
       overflow-y: auto; 
-      padding: 12px 4px;
+      padding: 14px 6px;
       display: flex; 
       flex-direction: column; 
-      gap: 10px;
+      gap: 12px;
       scroll-behavior: smooth;
       min-height: 0;
-      /* مهم: سكرول داخلي */
-      -webkit-overflow-scrolling: touch;
     }
-
     .msg {
-      max-width: 80%; 
-      padding: 11px 13px;
+      max-width: 78%; 
+      padding: 12px 14px;
       border-radius: 12px; 
-      line-height: 1.55;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+      line-height: 1.6;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
       animation: pop .18s ease;
       white-space: pre-wrap; 
       word-break: break-word;
-      font-size: 14.5px;
     }
     @keyframes pop { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
@@ -162,84 +154,69 @@
       color: #fff;
     }
 
-    .meta-time { font-size: 11px; color: var(--muted); margin-top: 5px; }
+    .meta-time { font-size: 12px; color: var(--muted); margin-top: 6px; }
 
     .compose {
       display: flex; 
-      gap: 8px; 
+      gap: 10px; 
       align-items: center;
       flex-shrink: 0;
     }
     .compose input {
       flex: 1; 
-      padding: 11px;
+      padding: 12px;
       border-radius: 12px; 
       border: 0;
       background: var(--glass); 
       color: #fff;
       outline: none; 
-      font-size: 14.5px;
+      font-size: 15px;
     }
     .compose button {
       background: var(--accent);
       border: 0; 
-      padding: 9px 14px;
+      padding: 10px 16px;
       border-radius: 10px; 
       color: #fff;
       font-weight: 700; 
       cursor: pointer;
       white-space: nowrap;
-      font-size: 14px;
     }
 
     .small-note { 
-      font-size: 12px; 
+      font-size: 13px; 
       color: var(--muted); 
-      margin-top: 6px; 
+      margin-top: 8px; 
     }
 
-    /* ====== موبايل (أهم جزء) ====== */
     @media (max-width: 980px) {
       body { 
-        padding: 6px;
-        gap: 6px;
+        padding: 8px; 
+        display: block;
       }
       .page { 
         grid-template-columns: 1fr; 
-        padding: 10px;
-        gap: 10px;
+        height: auto;
+        min-height: 100dvh;
+        padding: 12px;
+        gap: 12px;
       }
       .left { 
         order: 2; 
-        max-height: 38dvh;  /* سكرول داخلي */
+        max-height: 40vh;
         overflow-y: auto;
       }
       .right { 
         order: 1; 
-        min-height: 55dvh;
+        min-height: 55vh;
       }
-      .messages {
-        max-height: 45dvh;
-        padding: 10px 2px;
-      }
-      .brand .logo { width: 50px; height: 50px; font-size: 16px; }
-      .brand h1 { font-size: 17px; }
-      .chip { padding: 8px 10px; font-size: 13.5px; }
-      .chip .k { font-size: 11.5px; }
     }
 
     @media (max-width: 600px) {
       .page { padding: 8px; gap: 8px; }
       .left, .right { padding: 12px; }
-      .brand h1 { font-size: 16px; }
-      .compose input { font-size: 14px; padding: 10px; }
-      .compose button { padding: 8px 12px; font-size: 13px; }
-      .msg { font-size: 14px; padding: 10px 12px; }
-    }
-
-    /* تحسين السكرول على iOS */
-    .messages, .left {
-      -webkit-overflow-scrolling: touch;
+      .brand h1 { font-size: 18px; }
+      .compose button { padding: 10px 12px; font-size: 14px; }
     }
   </style>
 </head>
@@ -250,7 +227,7 @@
         <div class="logo">AH</div>
         <div>
           <h1>Alahly Chatbot</h1>
-          <div class="sub">المساعد الأهلاوي — معلومات محدثة</div>
+          <div class="sub">المساعد الأهلاوي — معلومات محدثة ومفصلة</div>
         </div>
       </div>
 
@@ -261,7 +238,7 @@
         </div>
         <div class="chip" onclick="askQuick('مين اللعيبة في الاهلي؟')">
           اللعيبة؟
-          <span class="k">تشكيلة اللاعبين</span>
+          <span class="k">تشكيلة واسماء اللاعبين</span>
         </div>
         <div class="chip" onclick="askQuick('اي البطولات التي يشارك فيها الاهلي؟')">
           البطولات اللي بيلعبها؟
@@ -286,7 +263,7 @@
       </div>
 
       <div class="info">
-        نصيحة: جرّب الأسئلة بصيغة بسيطة — البوت يعرف: <em>مين اللعيبة؟ مين المدرب؟ آخر البطولات؟</em>
+        نصيحة: جرّب الأسئلة بصيغة بسيطة وواضحة — البوت دلوقتي يعرف أسئلة زي: <em>امتى اتأسس؟ مين رئيس النادي؟ فين الملعب؟ مين الكابتن؟</em>
       </div>
     </aside>
 
@@ -294,26 +271,27 @@
       <div class="chat-header">
         <div style="display:flex;flex-direction:column;">
           <div class="title">Alahly Chatbot</div>
-          <div class="subtitle">اسألني عن الأهلي — اللاعبين، البطولات، المدرب...</div>
+          <div class="subtitle">اسألني عن الأهلي — اللاعبين، البطولات، المدرب، المقر، والمزيد</div>
         </div>
-        <div style="margin-inline-start:auto" class="small-note">محدثة</div>
+        <div style="margin-inline-start:auto" class="small-note">الردود مُحدّثة ومفصّلة</div>
       </div>
 
       <div class="messages" id="messages" role="log" aria-atomic="true"></div>
 
       <div class="compose" role="region" aria-label="منطقة الكتابة">
-        <input id="input" placeholder="اكتب سؤالك... مثال: مين اللعيبة؟" aria-label="حقل الرسالة" />
+        <input id="input" placeholder="اكتب سؤالك... مثال: مين اللعيبة في الاهلي؟" aria-label="حقل الرسالة" />
         <button id="sendBtn" aria-label="إرسال">إرسال</button>
       </div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
-        <div class="small-note">Alahly Chatbot</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <div class="small-note">Alahly Chatbot — نسخة محدثة</div>
         <div class="small-note" id="status" aria-hidden="true">جاهز</div>
       </div>
     </main>
   </div>
 
   <script>
-    const AHLY = { /* نفس البيانات اللي فوق (مش هتتغير) */ 
+    // ========== قاعدة بيانات الأهلي ==========
+    const AHLY = {
       name: "النادي الأهلي المصري",
       foundedDate: "24 أبريل 1907",
       president: "محمود الخطيب",
@@ -322,6 +300,7 @@
       mainStadium: "استاد القاهرة الدولي",
       clubStadium: "ملعب التتش بالجزيرة",
       location: "الجزيرة - محافظة القاهرة - جمهورية مصر العربية",
+      nicknames: ["الشياطين الحمر", "الأهلاوية"],
       recentTitles: [
         { year: 2024, title: "دوري أبطال أفريقيا" },
         { year: 2024, title: "الدوري المصري الممتاز" },
@@ -332,36 +311,58 @@
         "كأس مصر",
         "دوري أبطال أفريقيا",
         "كأس السوبر المصري",
-        "كأس العالم للأندية"
+        "كأس العالم للأندية (عند التأهل)"
       ],
       players: [
         { name: "محمد الشناوي", position: "حارس مرمى", country: "مصر" },
         { name: "مصطفى شوبير", position: "حارس مرمى", country: "مصر" },
         { name: "محمد السيد", position: "حارس مرمى", country: "مصر" },
         { name: "حمزة علاء", position: "حارس مرمى", country: "مصر" },
+        { name: "ياسين مرعي", position: "مدافع", country: "مصر" },
+        { name: "احمد رضا", position: "مدافع", country: "مصر" },
         { name: "ياسر ابراهيم", position: "مدافع", country: "مصر" },
         { name: "محمد هاني", position: "مدافع", country: "مصر" },
+        { name: "محمد شكري", position: "مدافع", country: "مصر" },
         { name: "أشرف داري", position: "مدافع", country: "المغرب" },
+        { name: "احمد رمضان", position: "مدافع", country: "مصر" },
         { name: "عمر كمال", position: "مدافع", country: "مصر" },
+        { name: "احمد عابدين", position: "مدافع", country: "مصر" },
+        { name: "مصطفى العش", position: "مدافع", country: "مصر" },
+        { name: "محمد الشامي", position: "مدافع", country: "مصر" },
+        { name: "أحمد عبد القادر", position: "خط وسط", country: "مصر" },
         { name: "أليو ديانج", position: "خط وسط", country: "مالي" },
+        { name: "أحمد نبيل 'كوكا'", position: "خط وسط", country: "مصر" },
         { name: "محمد مجدي 'أفشة'", position: "خط وسط", country: "مصر" },
         { name: "إمام عاشور", position: "خط وسط", country: "مصر" },
         { name: "مروان عطية", position: "خط وسط", country: "مصر" },
+        { name: "محمد علي بن رمضان", position: "خط وسط", country: "تونس" },
+        { name: "تريزيجيه", position: "خط وسط", country: "مصر" },
         { name: "حسين الشحات", position: "خط وسط/مهاجم", country: "مصر" },
+        { name: "كريم فؤاد", position: "مهاجم", country: "مصر" },
+        { name: "نيجك جراديشار", position: "مهاجم", country: "سلوفينيا" },
         { name: "أشرف بن شرقي", position: "مهاجم", country: "المغرب" },
+        { name: "أحمد سيد 'زيزو'", position: "مهاجم", country: "مصر" },
         { name: "طاهر محمد طاهر", position: "مهاجم", country: "مصر" },
-        { name: "محمد شريف", position: "مهاجم", country: "مصر" }
+        { name: "محمد شريف", position: "مهاجم", country: "مصر" },
+        { name: "حمزة عبدالكريم", position: "مهاجم", country: "مصر" },
+        { name: "محمد رافت", position: "مهاجم", country: "مصر" }
       ],
       trophies: {
         totalOfficial: "أكثر من 145 بطولة",
         breakdown: [
           { title: "الدوري المصري الممتاز", count: 44 },
           { title: "كأس مصر", count: 38 },
-          { title: "دوري أبطال أفريقيا", count: 12 }
+          { title: "كأس السوبر المصري", count: 14 },
+          { title: "دوري أبطال أفريقيا", count: 12 },
+          { title: "كأس الكونفدرالية الأفريقية", count: 1 },
+          { title: "كأس السوبر الأفريقي", count: 8 },
+          { title: "دوري منطقة القاهرة", count: 15 },
+          { title: "كؤوس تاريخية", count: 13 }
         ]
       }
     };
 
+    // ========== عناصر الواجهة ==========
     const messagesEl = document.getElementById("messages");
     const inputEl = document.getElementById("input");
     const sendBtn = document.getElementById("sendBtn");
@@ -372,51 +373,113 @@
       el.innerHTML = text;
       const time = document.createElement("div");
       time.className = "meta-time";
-      time.textContent = new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
+      const d = new Date();
+      time.textContent = d.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
       el.appendChild(time);
       messagesEl.appendChild(el);
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    addMessage("أهلاً! أنا Alahly Chatbot — اسألني عن اللاعبين، البطولات، أو أي حاجة تخص الأهلي.");
+    addMessage("أهلاً! أنا Alahly Chatbot — اسألني عن اللاعبين، البطولات، المدرب، المقر، أو أي حاجة تخص الأهلي.");
 
     function getReply(raw) {
       const msg = raw.trim().toLowerCase();
 
-      if (msg.includes("الزمالك")) return "مافيش معلومات عن الزمالك هنا! اسألني عن الأهلي";
+      if (msg.includes("الزمالك")) {
+        return "بصراحة صاحب الشات أهلاوي متعصب شوية — مافيش معلومات عن الزمالك هنا! اسألني عن الأهلي بقى 😉";
+      }
 
-      if (msg.includes("من انت") || msg.includes("مين انت")) return "أنا Alahly Chatbot — المساعد الأهلاوي";
+      if ((msg.includes("من") && msg.includes("انت")) || msg.includes("مين انت")) {
+        return "أنا Alahly Chatbot — المساعد الأهلاوي. بحب الأهلي وبقدملك معلومات عن التشكيلة، البطولات، المقر، والمدرب";
+      }
 
-      if (msg.includes("لعيبة") || msg.includes("لاعبين") || msg.includes("التشكيلة") || msg.includes("قائمة")) {
+      if ((msg.includes("امتى") || msg.includes("متى") || msg.includes("اتاسس")) && (msg.includes("الاهلي") || msg.includes("النادي"))) {
+        return `اتأسس النادي الأهلي في: ${AHLY.foundedDate}.\nتأسس على يد عمر لطفي بك بهدف خدمة الرياضة والوطن.`;
+      }
+
+      if ((msg.includes("مين") && msg.includes("رئيس")) || msg.includes("رئيس النادي")) {
+        return `رئيس النادي الحالي: ${AHLY.president} — أسطورة للنادي وقائد إداري مهم.`;
+      }
+
+      if ((msg.includes("فين") || msg.includes("مقر") || msg.includes("اين")) && (msg.includes("النادي") || msg.includes("الاهلي"))) {
+        return `مقر النادي: ${AHLY.location}.\nالملعب الرئيسي: ${AHLY.mainStadium}.\nملعب التتش: ${AHLY.clubStadium}.\nفروع في مدينة نصر، الشيخ زايد، والتجمع.`;
+      }
+
+      if (msg.includes("مدرب") || msg.includes("المدير الفني")) {
+        return `المدير الفني: ${AHLY.coach}.\nالمُساعد: ${AHLY.assistant}.`;
+      }
+
+      if ((msg.includes("كابتن") || msg.includes("الكابتن")) && (msg.includes("مين") || msg.includes("من"))) {
+        return "الكابتن الحالي: محمد الشناوي — حارس مرمى وقائد ذي خبرة.";
+      }
+
+      // === تعديل مهم: اللاعبين (الأولوية الأولى) ===
+      if (
+        msg.includes("لعيبة") || 
+        msg.includes("لاعبين") || 
+        msg.includes("التشكيلة") || 
+        msg.includes("قائمة") || 
+        msg.includes("الفريق") ||
+        msg.includes("مين اللعيبة")
+      ) {
         const byPos = {};
-        AHLY.players.forEach(p => { if (!byPos[p.position]) byPos[p.position] = []; byPos[p.position].push(p); });
-        let out = `تشكيلة الأهلي:\n\n`;
-        ["حارس مرمى", "مدافع", "خط وسط", "خط وسط/مهاجم", "مهاجم"].forEach(g => {
-          if (byPos[g]) {
+        AHLY.players.forEach(p => {
+          if (!byPos[p.position]) byPos[p.position] = [];
+          byPos[p.position].push(p);
+        });
+
+        let out = `تشكيلة الأهلي الحالية:\n\n`;
+        const groups = ["حارس مرمى", "مدافع", "خط وسط", "خط وسط/مهاجم", "مهاجم"];
+        groups.forEach(g => {
+          if (byPos[g]?.length) {
             out += `${g}:\n`;
-            byPos[g].forEach(pl => out += `  - ${pl.name} (${pl.country})\n`);
+            byPos[g].forEach(pl => {
+              out += `  - ${pl.name} (${pl.country})\n`;
+            });
             out += `\n`;
           }
         });
+        out += "لو عايز تفاصيل لاعب معين، اكتب اسمه.";
         return out;
       }
 
-      if (msg.includes("كل") && msg.includes("بطولات")) {
-        return `إجمالي: ${AHLY.trophies.totalOfficial}\n` + AHLY.trophies.breakdown.map(t => `- ${t.title}: ${t.count}`).join("\n");
+      // كل البطولات
+      if (msg.includes("كل") && (msg.includes("بطولات") || msg.includes("فاز"))) {
+        const lines = AHLY.trophies.breakdown.map(t => `- ${t.title}: ${t.count} مرة`).join("\n");
+        return `إجمالي البطولات: ${AHLY.trophies.totalOfficial}\n${lines}\n\nاسأل 'آخر البطولات' للإنجازات الحديثة.`;
       }
 
-      if ((msg.includes("آخر") || msg.includes("اخر")) && msg.includes("بطولات")) {
-        return `آخر البطولات:\n- ${AHLY.recentTitles.map(t => t.year + " — " + t.title).join("\n- ")}`;
+      // آخر البطولات
+      if ((msg.includes("آخر") || msg.includes("اخر")) && (msg.includes("بطولات") || msg.includes("فاز"))) {
+        return `آخر البطولات:\n- ${AHLY.recentTitles.map(t => t.year + " — " + t.title).join("\n- ")}\n\nيشارك في: ${AHLY.tournaments.slice(0,3).join("، ")}...`;
       }
 
+      // البطولات اللي بيلعبها
       if (msg.includes("بطولات") && !msg.includes("كل") && !msg.includes("آخر")) {
-        return `يشارك في:\n- ${AHLY.tournaments.join("\n- ")}`;
+        return `الأهلي يشارك في:\n- ${AHLY.tournaments.join("\n- ")}\n\nاسأل 'آخر البطولات' للإنجازات.`;
       }
 
-      if (msg.includes("مدرب")) return `المدير الفني: ${AHLY.coach}`;
-      if (msg.includes("مقر") || msg.includes("فين")) return `المقر: ${AHLY.location}\nالملعب: ${AHLY.mainStadium}`;
+      // نبذة عامة
+      if ((msg.includes("مين") || msg.includes("عن")) && msg.includes("الاهلي")) {
+        return `${AHLY.name}\n- تأسس: ${AHLY.foundedDate}\n- رئيس: ${AHLY.president}\n- مدرب: ${AHLY.coach}\n- آخر بطولات: ${AHLY.recentTitles.map(t=>t.title+" ("+t.year+")").join(" ، ")}`;
+      }
 
-      return "جرب: مين اللعيبة؟ | آخر البطولات | مين المدرب؟";
+      // سؤال عن لاعب
+      for (const pl of AHLY.players) {
+        const nameLower = pl.name.toLowerCase();
+        if (msg.includes(nameLower.split(" ")[0]) && msg.length <= 40) {
+          return `${pl.name}:\n- المركز: ${pl.position}\n- الجنسية: ${pl.country}\n\nاطلب 'إحصائيات ${pl.name}' للمزيد.`;
+        }
+      }
+
+      if (msg.includes("مباراة") || msg.includes("نتيجة")) {
+        return "لو عايز نتيجة مباراة، حدد الخصم أو التاريخ. للنتائج الحية نحتاج API.";
+      }
+
+      if (msg.includes("شكرا") || msg.includes("ميرسي")) return "العفو يا أهلاوي أي سؤال تاني؟";
+      if (msg.includes("ازيك") || msg.includes("اخبارك")) return "تمام وانت؟ لو عايز أخبار الفريق قول 'آخر البطولات'.";
+
+      return "مش فاهم السؤال — جرب:\n• مين اللعيبة؟\n• اي البطولات؟\n• مين المدرب؟\nأو اضغط زر جاهز.";
     }
 
     function askQuick(text) {
@@ -432,19 +495,26 @@
       inputEl.value = "";
       setStatus("يكتب...");
       setTimeout(() => {
-        addMessage(formatBotReply(getReply(v)), "bot");
+        const reply = getReply(v);
+        addMessage(formatBotReply(reply), "bot");
         setStatus("جاهز");
-      }, 600);
+      }, 500 + Math.random() * 700);
     }
 
     sendBtn.addEventListener("click", sendMessage);
-    inputEl.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage(); });
+    inputEl.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
 
     function setStatus(t) { document.getElementById("status").textContent = t; }
     function escapeHtml(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
     function formatBotReply(text) {
-      return escapeHtml(text).replace(/\n- /g, "<br>• ").replace(/\n/g, "<br>");
+      let out = escapeHtml(text);
+      out = out.replace(/\n- /g, "<br>• ");
+      out = out.replace(/\n/g, "<br>");
+      return out;
     }
+
+    window.AHLY = AHLY;
+    window.askQuick = askQuick;
   </script>
 </body>
 </html>
