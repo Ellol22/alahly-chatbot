@@ -13,14 +13,14 @@
       font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
     html, body { 
       height: 100%; 
       background: var(--bg); 
       color: #f2f5f7; 
-      overflow: hidden;
+      overflow: hidden; /* منع سكرول الصفحة */
     }
-    
+
     body { 
       display: flex; 
       flex-direction: column;
@@ -42,6 +42,19 @@
       background: linear-gradient(180deg, rgba(2,2,2,0.9), rgba(7,7,7,0.95));
       position: relative;
       padding: 14px;
+    }
+
+    .page::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="%23c8102e"/><stop offset="1" stop-color="%23a10825"/></linearGradient></defs><g transform="translate(50,30) scale(0.8)"><path d="M200 20 C120 20 60 80 60 160 C60 260 200 360 200 360 C200 360 340 260 340 160 C340 80 280 20 200 20 Z" fill="url(%23g)" /><text x="200" y="200" font-size="26" font-family=\'Cairo,Arial\' fill="%23fff" text-anchor="middle" font-weight="700">AL AHLY</text><text x="200" y="235" font-size="16" font-family=\'Cairo,Arial\' fill="%23fff" text-anchor="middle">الشياطين الحمر</text></g></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 55%;
+      opacity: 0.06;
+      pointer-events: none;
+      z-index: 0;
     }
 
     .left {
@@ -83,10 +96,8 @@
       border-radius: 12px;
       display: flex;
       flex-direction: column;
-      /* مهم: الـ right كله مش هيسكرول */
     }
 
-    /* ===== الـ header ثابت ===== */
     .chat-header {
       flex-shrink: 0;
       padding-bottom: 8px;
@@ -95,10 +106,9 @@
     .chat-header .title { font-weight: 700; font-size: 17px; }
     .chat-header .subtitle { color: var(--muted); font-size: 12px; }
 
-    /* ===== الـ messages: السكرول الحقيقي ===== */
     .messages {
       flex: 1;
-      min-height: 0; /* مهم جدًا */
+      min-height: 0;
       overflow-y: auto;
       padding: 12px 4px;
       display: flex;
@@ -121,22 +131,11 @@
     }
     @keyframes pop { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-    .msg.user {
-      margin-left: auto;
-      background: rgba(255,255,255,0.04);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.03);
-    }
-    .msg.bot {
-      margin-right: auto;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-left: 4px solid var(--accent);
-      color: #fff;
-    }
+    .msg.user { margin-left: auto; background: rgba(255,255,255,0.04); color: #fff; border: 1px solid rgba(255,255,255,0.03); }
+    .msg.bot { margin-right: auto; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-left: 4px solid var(--accent); color: #fff; }
 
     .meta-time { font-size: 11px; color: var(--muted); margin-top: 5px; }
 
-    /* ===== حقل الكتابة: مثبت في الأسفل ===== */
     .compose {
       flex-shrink: 0;
       display: flex; 
@@ -165,21 +164,12 @@
       font-size: 14px;
     }
 
-    /* ===== موبايل ===== */
+    /* موبايل */
     @media (max-width: 980px) {
-      .page { 
-        grid-template-columns: 1fr; 
-        padding: 10px;
-        gap: 10px;
-      }
-      .left { 
-        order: 2; 
-        max-height: 38dvh;
-        overflow-y: auto;
-      }
+      .page { grid-template-columns: 1fr; padding: 10px; gap: 10px; }
+      .left { order: 2; max-height: 38dvh; overflow-y: auto; }
       .right { order: 1; }
     }
-
     @media (max-width: 600px) {
       .page { padding: 8px; gap: 8px; }
       .left, .right { padding: 12px; }
@@ -198,8 +188,13 @@
         </div>
       </div>
       <div class="quick">
+        <div class="chip" onclick="askQuick('من انت؟')">من أنت؟ <span class="k">تعرف على البوت</span></div>
         <div class="chip" onclick="askQuick('مين اللعيبة في الاهلي؟')">اللعيبة؟ <span class="k">التشكيلة</span></div>
-        <div class="chip" onclick="askQuick('كل البطولات التي فاز بها الاهلي')">كل البطولات <span class="k">القائمة الكاملة</span></div>
+        <div class="chip" onclick="askQuick('اي البطولات التي يشارك فيها الاهلي؟')">البطولات اللي بيلعبها؟</div>
+        <div class="chip" onclick="askQuick('ما اخر البطولات التي فاز بها الاهلي؟')">آخر البطولات</div>
+        <div class="chip" onclick="askQuick('مين مدرب الاهلي دلوقتي؟')">المدرب؟</div>
+        <div class="chip" onclick="askQuick('فين مقر النادي الاهلي؟')">فين النادي؟</div>
+        <div class="chip" onclick="askQuick('كل البطولات التي فاز بها الاهلي')">كل البطولات</div>
       </div>
     </aside>
 
@@ -211,7 +206,6 @@
         </div>
       </div>
 
-      <!-- هنا السكرول الحقيقي -->
       <div class="messages" id="messages"></div>
 
       <div class="compose">
@@ -222,6 +216,58 @@
   </div>
 
   <script>
+    // ========= قاعدة البيانات (كاملة) =========
+    const AHLY = {
+      name: "النادي الأهلي المصري",
+      foundedDate: "24 أبريل 1907",
+      president: "محمود الخطيب",
+      coach: "Jess Thorup (يس ثوروب)",
+      assistant: "سامي قمصان",
+      mainStadium: "استاد القاهرة الدولي",
+      clubStadium: "ملعب التتش بالجزيرة",
+      location: "الجزيرة - محافظة القاهرة - جمهورية مصر العربية",
+      recentTitles: [
+        { year: 2024, title: "دوري أبطال أفريقيا" },
+        { year: 2024, title: "الدوري المصري الممتاز" },
+        { year: 2024, title: "كأس السوبر المصري" }
+      ],
+      tournaments: [
+        "الدوري المصري الممتاز",
+        "كأس مصر",
+        "دوري أبطال أفريقيا",
+        "كأس السوبر المصري",
+        "كأس العالم للأندية"
+      ],
+      players: [
+        { name: "محمد الشناوي", position: "حارس مرمى", country: "مصر" },
+        { name: "مصطفى شوبير", position: "حارس مرمى", country: "مصر" },
+        { name: "محمد السيد", position: "حارس مرمى", country: "مصر" },
+        { name: "حمزة علاء", position: "حارس مرمى", country: "مصر" },
+        { name: "ياسر إبراهيم", position: "مدافع", country: "مصر" },
+        { name: "محمد هاني", position: "مدافع", country: "مصر" },
+        { name: "أشرف داري", position: "مدافع", country: "المغرب" },
+        { name: "عمر كمال", position: "مدافع", country: "مصر" },
+        { name: "أليو ديانج", position: "خط وسط", country: "مالي" },
+        { name: "محمد مجدي 'أفشة'", position: "خط وسط", country: "مصر" },
+        { name: "إمام عاشور", position: "خط وسط", country: "مصر" },
+        { name: "مروان عطية", position: "خط وسط", country: "مصر" },
+        { name: "حسين الشحات", position: "خط وسط/مهاجم", country: "مصر" },
+        { name: "أشرف بن شرقي", position: "مهاجم", country: "المغرب" },
+        { name: "طاهر محمد طاهر", position: "مهاجم", country: "مصر" },
+        { name: "محمد شريف", position: "مهاجم", country: "مصر" }
+      ],
+      trophies: {
+        totalOfficial: "أكثر من 145 بطولة",
+        breakdown: [
+          { title: "الدوري المصري الممتاز", count: 44 },
+          { title: "كأس مصر", count: 38 },
+          { title: "دوري أبطال أفريقيا", count: 12 },
+          { title: "كأس السوبر المصري", count: 14 },
+          { title: "كأس السوبر الأفريقي", count: 8 }
+        ]
+      }
+    };
+
     const messagesEl = document.getElementById("messages");
     const inputEl = document.getElementById("input");
     const sendBtn = document.getElementById("sendBtn");
@@ -235,33 +281,80 @@
       time.textContent = new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
       el.appendChild(time);
       messagesEl.appendChild(el);
-      // سكرول تلقائي للأسفل
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    addMessage("أهلاً! أنا Alahly Chatbot — اسألني عن اللاعبين، البطولات، أو أي حاجة تخص الأهلي.");
+    addMessage("أهلاً! أنا Alahly Chatbot — اسألني عن اللاعبين، البطولات، المدرب، أو أي حاجة تخص الأهلي.");
 
+    // ========= getReply (كاملة + كل الأسئلة شغالة) =========
     function getReply(raw) {
       const msg = raw.trim().toLowerCase();
-      if (msg.includes("لعيبة") || msg.includes("التشكيلة")) {
-        return `تشكيلة الأهلي الحالية (محدثة):\n\n` +
-          `حارس مرمى:\n  - محمد الشناوي (مصر)\n  - مصطفى شوبير (مصر)\n  - حمزة علاء (مصر)\n\n` +
-          `مدافع:\n  - ياسر إبراهيم (مصر)\n  - محمد هاني (مصر)\n  - رامي ربيعة (مصر)\n  - أشرف داري (المغرب)\n\n` +
-          `خط وسط:\n  - أليو ديانج (مالي)\n  - مروان عطية (مصر)\n  - إمام عاشور (مصر)\n  - محمد مجدي أفشة (مصر)\n\n` +
-          `مهاجم:\n  - حسين الشحات (مصر)\n  - بيرسي تاو (جنوب أفريقيا)\n  - أشرف بن شرقي (المغرب)\n  - محمود كهربا (مصر)\n\n` +
-          `المدرب: جيس ثوروب\nالكابتن: محمد الشناوي\n\n` +
-          `آخر بطولة: دوري أبطال أفريقيا 2024`;
+
+      if (msg.includes("الزمالك")) return "بصراحة، أنا أهلاوي متعصب — مافيش معلومات عن الزمالك هنا!";
+
+      if (msg.includes("من انت") || msg.includes("مين انت")) return "أنا Alahly Chatbot — المساعد الأهلاوي. بحب الأهلي وبقدملك معلومات عن التشكيلة، البطولات، المقر، والمدرب";
+
+      if ((msg.includes("امتى") || msg.includes("متى") || msg.includes("اتاسس")) && (msg.includes("الاهلي") || msg.includes("النادي"))) {
+        return `اتأسس النادي الأهلي في: ${AHLY.foundedDate}.\nتأسس على يد عمر لطفي بك بهدف خدمة الرياضة والوطن.`;
       }
-      if (msg.includes("بطولات")) {
-        return `إجمالي البطولات: أكثر من 145\n\n` +
-          `- الدوري المصري: 44 مرة\n` +
-          `- كأس مصر: 38 مرة\n` +
-          `- دوري أبطال أفريقيا: 12 مرة\n` +
-          `- كأس السوبر الأفريقي: 8 مرات\n` +
-          `- كأس العالم للأندية: برونزية 2021\n\n` +
-          `آخر بطولة: دوري أبطال أفريقيا 2024`;
+
+      if ((msg.includes("مين") && msg.includes("رئيس")) || msg.includes("رئيس النادي")) {
+        return `رئيس النادي الحالي: ${AHLY.president} — أسطورة للنادي وقائد إداري مهم.`;
       }
-      return "جرب: مين اللعيبة؟ | كل البطولات | مين المدرب؟";
+
+      if ((msg.includes("فين") || msg.includes("مقر") || msg.includes("اين")) && (msg.includes("النادي") || msg.includes("الاهلي"))) {
+        return `مقر النادي: ${AHLY.location}.\nالملعب الرئيسي: ${AHLY.mainStadium}.\nملعب التتش: ${AHLY.clubStadium}.\nفروع في مدينة نصر، الشيخ زايد، والتجمع.`;
+      }
+
+      if (msg.includes("مدرب") || msg.includes("المدير الفني")) {
+        return `المدير الفني: ${AHLY.coach}.\nالمُساعد: ${AHLY.assistant}.`;
+      }
+
+      if ((msg.includes("كابتن") || msg.includes("الكابتن")) && (msg.includes("مين") || msg.includes("من"))) {
+        return "الكابتن الحالي: محمد الشناوي — حارس مرمى وقائد ذي خبرة.";
+      }
+
+      // اللاعبين
+      if (msg.includes("لعيبة") || msg.includes("لاعبين") || msg.includes("التشكيلة") || msg.includes("قائمة") || msg.includes("الفريق") || msg.includes("مين اللعيبة")) {
+        const byPos = {};
+        AHLY.players.forEach(p => { if (!byPos[p.position]) byPos[p.position] = []; byPos[p.position].push(p); });
+        let out = `تشكيلة الأهلي الحالية:\n\n`;
+        ["حارس مرمى", "مدافع", "خط وسط", "خط وسط/مهاجم", "مهاجم"].forEach(g => {
+          if (byPos[g]) {
+            out += `${g}:\n`;
+            byPos[g].forEach(pl => out += `  - ${pl.name} (${pl.country})\n`);
+            out += `\n`;
+          }
+        });
+        out += "لو عايز تفاصيل لاعب معين، اكتب اسمه.";
+        return out;
+      }
+
+      // كل البطولات
+      if (msg.includes("كل") && (msg.includes("بطولات") || msg.includes("فاز"))) {
+        const lines = AHLY.trophies.breakdown.map(t => `- ${t.title}: ${t.count} مرة`).join("\n");
+        return `إجمالي البطولات: ${AHLY.trophies.totalOfficial}\n${lines}\n\nاسأل 'آخر البطولات' للإنجازات الحديثة.`;
+      }
+
+      // آخر البطولات
+      if ((msg.includes("آخر") || msg.includes("اخر")) && (msg.includes("بطولات") || msg.includes("فاز"))) {
+        return `آخر البطولات:\n- ${AHLY.recentTitles.map(t => t.year + " — " + t.title).join("\n- ")}\n\nيشارك في: ${AHLY.tournaments.slice(0,3).join("، ")}...`;
+      }
+
+      // البطولات اللي بيلعبها
+      if (msg.includes("بطولات") && !msg.includes("كل") && !msg.includes("آخر")) {
+        return `الأهلي يشارك في:\n- ${AHLY.tournaments.join("\n- ")}\n\nاسأل 'آخر البطولات' للإنجازات.`;
+      }
+
+      // نبذة عامة
+      if ((msg.includes("مين") || msg.includes("عن")) && msg.includes("الاهلي")) {
+        return `${AHLY.name}\n- تأسس: ${AHLY.foundedDate}\n- رئيس: ${AHLY.president}\n- مدرب: ${AHLY.coach}\n- آخر بطولات: ${AHLY.recentTitles.map(t=>t.title+" ("+t.year+")").join(" ، ")}`;
+      }
+
+      if (msg.includes("شكرا") || msg.includes("ميرسي")) return "العفو يا أهلاوي أي سؤال تاني؟";
+      if (msg.includes("ازيك") || msg.includes("اخبارك")) return "تمام وانت؟ لو عايز أخبار الفريق قول 'آخر البطولات'.";
+
+      return "مش فاهم السؤال — جرب:\n• مين اللعيبة؟\n• اي البطولات؟\n• مين المدرب؟\nأو اضغط زر جاهز.";
     }
 
     function askQuick(text) {
